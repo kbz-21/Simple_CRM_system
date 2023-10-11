@@ -1,0 +1,85 @@
+{% extends 'CRM_APP/base.html' %} {% load i18n %}
+
+{% block content %}
+<div " class="col-md-6 offset-md-3">
+<!-- <form method="GET" action{% url 'home' %}> -->
+      <!-- {{forms.as_p}} -->
+    <!-- <input type="submit" value="submit" class="btn btn-primary" -->
+<!-- </form>   -->
+    {% if user.is_authenticated %}
+    
+    <h5 style="color:DodgerBlue; opacity: 0,8;"><strong><i>STUDENT INFORMATION TABLE</i></strong></h></div>
+    
+      <div style="text-align: right;" class="p-b-10">
+        <a href="{% url 'export-excel' %}"class="btn btn-secondary">Export Excel </a>
+      </div>
+      <!-- import excel file button -->
+     <div class="" >
+      <form  method="POST" enctype="multipart/form-data ">
+        {% csrf_token %}
+        <input type="file" name="my_file" />
+        <button type="submit">Import</button>
+      </form>   
+      </div >
+      <!-- Home table -->
+      <div class="p-10">
+          
+        
+        {% if records %}
+        <table  class="table table-striped table-hover table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Student_id </th>
+            <th scope="col">Name</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Email</th>
+            <th scope="col">University</th>
+            <th scope="col">Department</th>
+            <th scope="col">Block/Dorm</th>
+            <th scope="col">Acadamics</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for record in records %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td><a href=" {% url 'record' record.pk %}">{{ record.student_id }}</a></td>  
+            <td>{{ record.first_name }} {{ record.last_name }}</td>
+            <td>{{ record.Phone }}</td>
+            <td> {{ record.Email  }}</td>
+            <td> {{ record.University}}</td>
+            <td>{{ record.Department}}</td>
+            <td> {{ record.Block_Dorm }}</td>
+            <td>{{ record.Acadamics}}</td>
+            <!-- <br/><br/> -->
+        </tr> 
+        {% endfor %} 
+        {% endif %}  {% endif %} </div>{% endblock %}
+ 
+
+  
+
+
+<!--  -->
+    <!-- <div class="col-md-6 offset-md-3"> -->
+<!--<h1>Login</h1>
+<br/>
+<form method="POST" action="{% url 'home' %}">
+    {% csrf_token %}
+        <div class="mb-3">
+          <input type="text" class="form-control"  name="username", placeholder="username" required> 
+        </div>
+        <br/>
+        <div class="mb-3">
+          <input type="password" class="form-control" name="password", placeholder="password" required>
+        </div>
+        <br/>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+</form>
+</div>-->
+
+
+
+

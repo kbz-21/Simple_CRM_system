@@ -1,0 +1,39 @@
+{% extends 'CRM_APP/base.html' %}
+{% block content %}
+<div style="background-color:rgb(240, 228, 215)" class="card">
+    <div  class="card-header"><strong>
+      <!-- <img src=url"img_avator.jpg" class="card-img-right" alt="img error"> -->
+        {{customer_record.first_name}} 
+        {{customer_record.last_name}}</strong>
+    </div>
+    <div class="card-body">
+        
+ <p class="card-text">          
+<strong>Student_id: </strong>{{customer_record.student_id}}
+</p>
+<p class="card-text"> 
+<strong>Phone: </strong>{{customer_record.Phone}}
+</p>
+<p class="card-text"> 
+<strong>Email: </strong>{{customer_record.Email}}
+</p>
+<p class="card-text"> 
+<strong>University: </strong>{{customer_record.University}}
+</p>
+<p class="card-text"> 
+<strong>Department: </strong>{{customer_record.Department}}
+</p>
+<p class="card-text"> 
+<strong>Block/Dorm: </strong>{{customer_record.Block_Dorm}}
+</p>
+<p class="card-text"> 
+<strong>Acadamics: </strong>{{customer_record.Acadamics}}
+</p>
+<!-- <a href="#" class="btn btn-primary stretched-link">See Profile</a> -->
+    </div>
+  </div>
+  <br/><br/>
+<a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+<a href="{% url 'update_record' customer_record.id %}" class="btn btn-secondary">Update Record</a>
+
+{% endblock %}  
