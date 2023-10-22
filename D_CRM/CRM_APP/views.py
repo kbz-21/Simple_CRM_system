@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from CRM_APP.forms import SignUpForm, AddRecordForm #UniversityNameFilterForm
 from CRM_APP.models import Record
@@ -14,7 +15,7 @@ from django.http import HttpResponse
 import xlwt
 
 def landing_page_view(request):
-    return render(request, 'landing.html')
+    return render(request, 'CRM_APP/landing.html')
 
 def login_user(request):    
     form = LoginForm()
@@ -22,6 +23,7 @@ def login_user(request):
 
     if request.method == 'POST':
         form = LoginForm(request.body)
+        print("$$$$$$$$$$ 45 $$$)")
         
         if form.is_valid():
             user = authenticate(
@@ -35,7 +37,7 @@ def login_user(request):
                 message = 'Login failed!'
     return render(request, 'CRM_APP/login.html', context={'form': form, 'message': message})
 
-
+@login_required(login_url='/login/')
 def home(request):
     records = Record.objects.all()
     return render(request, "CRM_APP/home.html", {"records": records})
@@ -69,7 +71,7 @@ def customer_record(request,pk):
     if request.user.is_authenticated:
         # Look up Records
         customer_record = Record.objects.get(id=pk)
-        return render(request, 'record.html' , {'customer_record':customer_record})
+        return render(request, 'CRM_APP/record.html' , {'customer_record':customer_record})
     else:
         messages.success(request, "You Must Be Logged In To View That Page..")
         return redirect('home')
