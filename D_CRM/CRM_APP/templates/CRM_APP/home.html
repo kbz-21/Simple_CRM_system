@@ -1,14 +1,10 @@
 {% extends 'CRM_APP/base.html' %} {% load i18n %}
-
 {% block content %}
 <div " class="col-md-6 offset-md-3">
-<!-- <form method="GET" action{% url 'home' %}> -->
-      <!-- {{forms.as_p}} -->
-    <!-- <input type="submit" value="submit" class="btn btn-primary" -->
-<!-- </form>   --> 
+
     {% if user.is_authenticated %}
     
-    <h5 style="color:DodgerBlue; opacity: 0,8;"><strong><i>STUDENT INFORMATION TABLE</i></strong></h></div>
+    <h5  style="color:#cccccc; text-align: center; "><strong><i>STUDENT INFORMATION TABLE</i></strong></h></div>
     
       <div style="text-align: right;" class="p-b-10">
         <a href="{% url 'export-excel' %}"class="btn btn-secondary">Export Excel </a>
@@ -22,14 +18,25 @@
       </form>   
       </div >
       <!-- Home table -->
+
+
+
+      <!DOCTYPE html>
+      <html>
+      <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      
+      </body>
+      </html>
+
       <div class="p-10">
-          
-        
         {% if records %}
+    
         <table  class="table table-striped table-hover table-bordered">
         <thead class="table-dark">
           <tr>
-            <th scope="col">No</th>
+            <th  scope="col">No</th>
             <th scope="col">Student_id </th>
             <th scope="col">Name</th>
             <th scope="col">Phone</th>
@@ -54,31 +61,19 @@
             <td>{{ record.Acadamics}}</td>
             <!-- <br/><br/> -->
         </tr> 
+
+       
+
         {% endfor %} 
-        {% endif %}  {% endif %} </div>{% endblock %}
+        {% endif %}  {% endif %}</div>{% endblock %}
  
 
   
 
+  
 
-<!--  -->
-    <!-- <div class="col-md-6 offset-md-3"> -->
-<!--<h1>Login</h1>
-<br/>
-<form method="POST" action="{% url 'home' %}">
-    {% csrf_token %}
-        <div class="mb-3">
-          <input type="text" class="form-control"  name="username", placeholder="username" required> 
-        </div>
-        <br/>
-        <div class="mb-3">
-          <input type="password" class="form-control" name="password", placeholder="password" required>
-        </div>
-        <br/>
-        <button type="submit" class="btn btn-primary">Login</button>
-      </form>
-</form>
-</div>-->
+
+
 
 
 

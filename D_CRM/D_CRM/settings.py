@@ -20,7 +20,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+LOGIN_URL = 'login'
 # Application definition
 
 INSTALLED_APPS = [
@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'CRM_APP',
     'import_export',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

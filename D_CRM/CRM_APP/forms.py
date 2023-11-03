@@ -37,11 +37,11 @@ class AddRecordForm(forms.ModelForm):
     last_name = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Last Name", "class":"form-control"}), label="")
     Phone = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Phone", "class":"form-control"}), label="")
     student_id = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Student_id", "class":"form-control"}), label="")
-    Email = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Email", "class":"form-control"}), label="")
+    Email = forms.CharField(required=True,widget=forms.widgets.TextInput(attrs={"placeholder":"Email", "class":"form-control"}), label="")
     University = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"University", "class":"form-control"}), label="")
     School = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"School", "class":"form-control"}), label="")
-    Department = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Department", "class":"form-control"}), label="")
-    Block_Dorm = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Block/Dorm", "class":"form-control"}), label="")
+    Department = forms.CharField(required=True,widget=forms.widgets.TextInput(attrs={"placeholder":"Department", "class":"form-control"}), label="")
+    Block_Dorm = forms.CharField(required=True,widget=forms.widgets.TextInput(attrs={"placeholder":"Block/Dorm", "class":"form-control"}), label="")
     Acadamics = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Acadamics", "class":"form-control"}), label="")
 
     class Meta:

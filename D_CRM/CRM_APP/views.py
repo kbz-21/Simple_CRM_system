@@ -2,14 +2,13 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from CRM_APP.forms import SignUpForm, AddRecordForm #UniversityNameFilterForm
+from CRM_APP.forms import SignUpForm, AddRecordForm 
 from CRM_APP.models import Record
 from CRM_APP.forms import LoginForm
 from tablib import Dataset
 from CRM_APP.resources import RecordResource
 from django.utils.datastructures import MultiValueDictKeyError
-'''import datetime # for export csv
-# import csv'''
+# from .filters import FilterRecord
 import datetime
 from django.http import HttpResponse
 import xlwt
@@ -17,32 +16,34 @@ import xlwt
 def landing_page_view(request):
     return render(request, 'CRM_APP/landing.html')
 
-def login_user(request):    
-    form = LoginForm()
-    message = ''
-
-    if request.method == 'POST':
-        form = LoginForm(request.body)
-        print("$$$$$$$$$$ 45 $$$)")
+def login_user(request):
+    if request.method == 'GET':
         
-        if form.is_valid():
-            user = authenticate(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password'],
-            )
-            if user is not None:
-                login(request, user)
-                message = f'Hello {user.username}! You have been logged in'
-            else:
-                message = 'Login failed!'
-    return render(request, 'CRM_APP/login.html', context={'form': form, 'message': message})
+        if request.user.is_authenticated:
+            return redirect('home')
+        form = LoginForm()
+        return render(request,'CRM_APP/login.html', {'form': form})
 
-@login_required(login_url='/login/')
+    elif request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username=form.cleaned_data['username']
+            password=form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                messages.success(request,f'Hi {username.title()}, welcome!')
+                return redirect('home')
+        
+    messages.error(request,f'Invalid username or password')
+    return render(request, 'CRM_APP/login.html', context={'form': form})
+
+
+@login_required
 def home(request):
     records = Record.objects.all()
-    return render(request, "CRM_APP/home.html", {"records": records})
+    return render(request, 'CRM_APP/home.html', {'records': records})
     
-
 
 def logout_user(request):
     logout(request)
@@ -67,6 +68,7 @@ def register_user(request):
         return render(request, 'CRM_APP/register.html' , {'form':form})
     return render(request, 'CRM_APP/register.html' , {'form':form})
 
+@login_required
 def customer_record(request,pk):
     if request.user.is_authenticated:
         # Look up Records
@@ -75,7 +77,8 @@ def customer_record(request,pk):
     else:
         messages.success(request, "You Must Be Logged In To View That Page..")
         return redirect('home')
-    
+
+@login_required    
 def add_record(request):
     form = AddRecordForm(request.POST or None)
     if request.user.is_authenticated:
@@ -85,11 +88,12 @@ def add_record(request):
                 messages.success(request, "Record Added...")
                 return redirect ('home')
 
-        return render(request, 'add_record.html' , {'form':form})
+        return render(request, 'CRM_APP/add_record.html' , {'form':form})
     else:
         messages.success(request, "You Must Be Logged In...")
         return redirect ('home')
-    
+
+@login_required   
 def update_request(request,pk):
     if request.user.is_authenticated:
         current_record = Record.objects.get(id=pk)
@@ -103,32 +107,9 @@ def update_request(request,pk):
         messages.success(request, "You Must Be Logged In...")
         return redirect ('home')
     
-'''def filter_students(request):
-    # Get the filter parameters from the requests
-    Department = request.GET.get('Department')
-    Acadamics = request.GET.get('Acadamics')
-    University = request.GET.get('University')
 
-    # start with all students
 
-    home = home.objects.all()
-    # applying filters based on provided parameter
-    if Department:
-        home = home.filter(Department__icontains=Department)
-    if Acadamics:
-        home = home.filter(Department__icontains=Acadamics)
-    if University:
-        home = home.filter(Department__icontains=University)
-    
-    context={'home':home}
-    return render(request, 'home.html', context)'''
-'''def home(request):
-    context = {'form': UniversityNameFilterForm(), 
-               'records': Record.objects.all()
-               }
-   
-    return render(request, 'home.html', context)'''
-
+@login_required
 def importExcel(request):
     if request.method == 'POST':
         record_resource = RecordResource()
@@ -160,22 +141,8 @@ def importExcel(request):
     return render(request, 'import.html')
 
 
-'''def export_csv(request):
-    response= HttpResponse(content_type='text/csv')
-    response['content-Disposition'] = 'attachment;filename=Expenses' +\
-        str(datetime.datetime.now()+'.csv')
 
-    writer=csv.writer(response)
-    writer.writerow(['No','Student_id','Name','Phone','Email','University','Department','Block/Dorm','Acadamics'])
-
-    expenses = Expense = Record.objects.filter(owner= request.user)
-
-
-    for template in template:
-        writer.writerow([template.No,template.Student_id,template.Name,template.Phone,template.Email,template.University,template.Department,template.Block_Dorm,template.Acadamics])
-
-    return response'''
-
+@login_required
 def export_excel(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename=Record' + \
@@ -204,6 +171,11 @@ def export_excel(request):
 
     return response
 
+# def searchRecord(request):
+    # students = Record.objects.all()
+    # filters = FilterRecord(request.GET, queryset=students)
+    # context = {'filters':filters}
+    # return render(request, 'student/searchStudent.html',context)
 
 
 
